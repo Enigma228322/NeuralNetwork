@@ -55,6 +55,7 @@ public:
 				// if we need decimal numbers in range 0 - 1, we can divide big nums
 				// for example 0,246 we should divide 246/1000
 				matr[i][j] = (l_range + rand() % r_range) / 10e3;
+				matr[i][j] *= ((i + j) % 2 == 0) ? -1 : 1;
 			}
 		}
 	}
