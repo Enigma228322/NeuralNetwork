@@ -1,7 +1,7 @@
 #pragma once
 // MA FIRST AI PROJECT, DONT JUDGE HARD PLS
 
-#include "NetMatr.h"2
+#include "NetMatr.h"
 
 class NeuralNetwork
 {
@@ -23,13 +23,19 @@ public:
 	NeuralNetwork() {}
 	~NeuralNetwork() {}
 
-	NeuralNetwork(int in_nodes, int h_nodes, int out_nodes)
-	{
+	void Init_wights()
+	{ 
 		w_ih = NetMatr(h_nodes, in_nodes, 0, 1);
 		w_ho = NetMatr(out_nodes, h_nodes, 0, 1);
+	}
+
+	NeuralNetwork(int in_nodes, int h_nodes, int out_nodes)
+	{
 		this->in_nodes = in_nodes;
 		this->h_nodes = h_nodes;
 		this->out_nodes = out_nodes;
+		Init_wights();
+		w_ho.Show();
 	}
 	// Name of method says for himself i suppose
 	void SetLearnCoef(double learn_c)

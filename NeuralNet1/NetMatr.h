@@ -6,11 +6,11 @@ class NetMatr
 private:
 	double **matr;
 	int n, m;
-	bool check_empty = 0;
+	bool check_empty = true;
 	void CreateMatr(int n, int m)
 	{
 		// set the check var
-		check_empty = 1;
+		check_empty = false;
 		matr = new double*[n];
 		for (int i = 0; i < m; i++)
 		{
@@ -20,12 +20,19 @@ private:
 public:
 	NetMatr() {}
 	// copy constructor
-	NetMatr(const NetMatr &other)
+	void operator=(const NetMatr &other)
 	{
+		this->n = other.n;
+		this->m = other.m;
+		check_empty = false;
 		this->matr = new double*[other.n];
 		for (int i = 0; i < other.m; i++)
 		{
 			this->matr[i] = new double[other.m];
+			for (int j = 0; j < other.m; j++)
+			{
+				this->matr[i][j] = other.matr[i][j];
+			}
 		}
 	}
 
@@ -63,7 +70,7 @@ public:
 	void Show()
 	{
 		// Check emptiness of matr
-		if (!check_empty)
+		if (check_empty)
 		{
 			std::cout << "Массив пуст";
 			return;
