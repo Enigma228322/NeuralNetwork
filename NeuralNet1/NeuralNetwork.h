@@ -35,7 +35,6 @@ public:
 		this->h_nodes = h_nodes;
 		this->out_nodes = out_nodes;
 		Init_wights();
-		w_ho.Show();
 	}
 	// Name of method says for himself i suppose
 	void SetLearnCoef(double learn_c)

@@ -20,6 +20,22 @@ private:
 public:
 	NetMatr() {}
 	// copy constructor
+	NetMatr(const NetMatr &other)
+	{
+		this->n = other.n;
+		this->m = other.m;
+		check_empty = false;
+		this->matr = new double*[other.n];
+		for (int i = 0; i < other.m; i++)
+		{
+			this->matr[i] = new double[other.m];
+			for (int j = 0; j < other.m; j++)
+			{
+				this->matr[i][j] = other.matr[i][j];
+			}
+		}
+	}
+	// Overload of '=' operator as copy constructor
 	void operator=(const NetMatr &other)
 	{
 		this->n = other.n;
