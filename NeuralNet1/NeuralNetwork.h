@@ -2,6 +2,7 @@
 // MA FIRST AI PROJECT, DONT JUDGE HARD PLS
 
 #include "NetMatr.h"
+#include  <cmath>
 
 class NeuralNetwork
 {
@@ -19,6 +20,13 @@ private:
 	NetMatr w_ho;
 	// For more abstraction we can use array of matrixes
 	// NetMatr *w; - but it's not conveniently
+
+	// Activation function
+	double Sigmoid(double x)
+	{
+		return 1 / (1 + exp(-x));
+	}
+
 public:
 	NeuralNetwork() {}
 	~NeuralNetwork() {}
@@ -34,6 +42,7 @@ public:
 		this->in_nodes = in_nodes;
 		this->h_nodes = h_nodes;
 		this->out_nodes = out_nodes;
+		// Initialization of links between nodes.(weights)
 		Init_wights();
 	}
 	// Name of method says for himself i suppose
