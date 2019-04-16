@@ -3,6 +3,9 @@
 
 #include "NetMatr.h"
 #include  <cmath>
+#include <string>
+#include <fstream>
+#include <vector>
 
 class NeuralNetwork
 {
@@ -13,6 +16,8 @@ private:
 	int in_nodes, h_nodes, out_nodes;
 	// Learning coeficent
 	double learn_coef;
+	// Input and output layer matrix
+	NetMatr inp, outp;
 	// Two matrixes:
 	// w_ih - link weights between input & hidden layer (n = hidden, m = input)
 	// w_ih - link weights between hidden & output layer (n = output, m = hidden)
@@ -49,6 +54,29 @@ public:
 	void SetLearnCoef(double learn_c)
 	{
 		this->learn_coef = learn_c;
+	}
+	// Initilization of Input Layer
+	void Input(std::string filename)
+	{
+		std::ifstream in(filename);
+		// We will save all input values in vector 'v'
+		std::vector <double> v;
+		// temporary variable
+		double temp;
+		// Reading file, while we didnt read whole file
+		while (in >> temp)
+		{
+			v.push_back(temp);
+		}
+		// Create object input layer matrix
+		inp = NetMatr(v.size(), 1);
+		// Filling up out input layer
+		for (int i = 0; i < v.size(); i++)
+		{
+			inp.SetMatr(i, 0, v[i]);
+		}
+		inp.Show();
+		in.close();
 	}
 	// Training neural net
 	void Train() {}

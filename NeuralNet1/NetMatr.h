@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <vector>
 
 class NetMatr
 {
@@ -107,7 +108,12 @@ public:
 		}
 		return temp;
 	}
-
+	// Setting matrix elements separately
+	void SetMatr(int i, int j, double value)
+	{
+		matr[i][j] = value;
+	}
+	// Setting matrix using keyboard
 	void SetMatr()
 	{
 		for (int i = 0; i < n; i++)
@@ -118,7 +124,7 @@ public:
 			}
 		}
 	}
-
+	// Show matrix
 	void Show()
 	{
 		// Check emptiness of matr
