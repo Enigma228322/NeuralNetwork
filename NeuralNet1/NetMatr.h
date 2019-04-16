@@ -12,13 +12,18 @@ private:
 		// set the check var
 		check_empty = false;
 		matr = new double*[n];
-		for (int i = 0; i < m; i++)
+		for (int i = 0; i < n; i++)
 		{
 			matr[i] = new double[m];
 		}
 	}
 public:
 	NetMatr() {}
+	// Create simple matrix
+	NetMatr(int n, int m)
+	{
+		CreateMatr(n, m);
+	}
 	// copy constructor
 	NetMatr(const NetMatr &other)
 	{
@@ -82,6 +87,19 @@ public:
 			}
 		}
 	}
+
+	// Matrix multiplication
+	/*NetMatr operator*(const NetMatr &other)
+	{
+		NetMatr temp
+		for(int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < m; j++)
+			{
+			}
+		}
+	}*/
+
 
 	void Show()
 	{
