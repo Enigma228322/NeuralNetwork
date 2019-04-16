@@ -15,6 +15,8 @@ private:
 		for (int i = 0; i < n; i++)
 		{
 			matr[i] = new double[m];
+			// Initialization by zeros
+			for (int j = 0; j < m; j++) matr[i][j] = 0;
 		}
 	}
 public:
