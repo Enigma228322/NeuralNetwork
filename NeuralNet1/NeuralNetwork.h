@@ -75,7 +75,7 @@ public:
 		{
 			inp.SetMatr(i, 0, v[i]);
 		}
-		inp.Show();
+
 		in.close();
 	}
 	// Training neural net
