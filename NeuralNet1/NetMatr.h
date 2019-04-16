@@ -24,6 +24,8 @@ public:
 	// Create simple matrix
 	NetMatr(int n, int m)
 	{
+		this->n = n;
+		this->m = m;
 		CreateMatr(n, m);
 	}
 	// copy constructor
@@ -33,7 +35,7 @@ public:
 		this->m = other.m;
 		check_empty = false;
 		this->matr = new double*[other.n];
-		for (int i = 0; i < other.m; i++)
+		for (int i = 0; i < other.n; i++)
 		{
 			this->matr[i] = new double[other.m];
 			for (int j = 0; j < other.m; j++)
@@ -49,7 +51,7 @@ public:
 		this->m = other.m;
 		check_empty = false;
 		this->matr = new double*[other.n];
-		for (int i = 0; i < other.m; i++)
+		for (int i = 0; i < other.n; i++)
 		{
 			this->matr[i] = new double[other.m];
 			for (int j = 0; j < other.m; j++)
@@ -89,19 +91,33 @@ public:
 			}
 		}
 	}
-
 	// Matrix multiplication
-	/*NetMatr operator*(const NetMatr &other)
+	NetMatr operator*(const NetMatr &other)
 	{
-		NetMatr temp
+		NetMatr temp(this->n, other.m);
 		for(int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < other.m; j++)
+			{	
+				for (int l = 0; l < m; l++)
+				{
+					temp.matr[i][j] += (matr[i][l] * other.matr[l][j]);
+				}
+			}
+		}
+		return temp;
+	}
+
+	void SetMatr()
+	{
+		for (int i = 0; i < n; i++)
 		{
 			for (int j = 0; j < m; j++)
 			{
+				std::cin >> matr[i][j];
 			}
 		}
-	}*/
-
+	}
 
 	void Show()
 	{

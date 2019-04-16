@@ -7,6 +7,7 @@ int main()
 	NeuralNetwork nn(in_nodes, h_nodes, out_nodes);
 	nn.SetLearnCoef(0.3);
 
+
 	system("pause");
 	return 0;
 }
