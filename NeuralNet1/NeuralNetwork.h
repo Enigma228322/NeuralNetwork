@@ -130,7 +130,7 @@ public:
 		hidden = Activation_F(NetMatr(w_ih * input));
 		// Calculating output layer and return it
 		outp = Activation_F(NetMatr(w_ho * hidden));
-		outp.Show();
+		NetMatr output_errors = targets - outp;
 	}
 	// Quering out neural network
 	NetMatr Query(NetMatr input) override

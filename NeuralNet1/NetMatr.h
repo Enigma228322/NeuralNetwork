@@ -100,6 +100,7 @@ public:
 	// Matrix multiplication
 	NetMatr operator*(const NetMatr &other)
 	{
+		// Creating temporary matrix
 		NetMatr temp(this->n, other.m);
 		for(int i = 0; i < n; i++)
 		{
@@ -109,6 +110,22 @@ public:
 				{
 					temp.matr[i][j] += (matr[i][l] * other.matr[l][j]);
 				}
+			}
+		}
+		return temp;
+	}
+	// Substraction of matrixes
+	NetMatr operator-(const NetMatr &other)
+	{
+		if (other.n != n || other.m != m)
+			std::cout << "Attention!!! Matrixes dimensions are different";
+		// Creating temporary matrix
+		NetMatr temp(n, m);
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < m; j++)
+			{
+				temp.matr[i][j] = matr[i][j] - other.matr[i][j];
 			}
 		}
 		return temp;
