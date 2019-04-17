@@ -42,7 +42,7 @@ private:
 
 public:
 	// Input, hidden and output layers matrixes
-	NetMatr inp, hidden, outp;
+	NetMatr inp, hidden, final_out;
 
 	// Target list
 	NetMatr targets;
@@ -129,10 +129,15 @@ public:
 		// Calculating of hidden layer
 		hidden = Activation_F(NetMatr(w_ih * input));
 		// Calculating of output layer and return it
-		outp = Activation_F(NetMatr(w_ho * hidden));
+		final_out = Activation_F(NetMatr(w_ho * hidden));
 		// Calculating of output errors
-		NetMatr out_errors = targets - outp;
+		NetMatr out_errors = targets - final_out;
 		NetMatr hidden_errors = w_ho.T() * out_errors;
+		// Gradient descent formula
+		w_ho.Show();
+		double first = ((final_out - 1.0) * ((out_errors.Transpose() * learn_coef).Vector_Mult(final_out))).Transpose().Vector_Mult(hidden);
+		w_ho = w_ho - first;
+		w_ho.Show();
 	}
 	// Quering out neural network
 	NetMatr Query(NetMatr input) override

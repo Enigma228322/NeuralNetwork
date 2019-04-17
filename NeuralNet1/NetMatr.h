@@ -50,6 +50,22 @@ public:
 			}
 		}
 	}
+	// Vectors multiplication
+	double Vector_Mult(const NetMatr &other)
+	{
+		double sum = 0;
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < other.m; j++)
+			{
+				for (int l = 0; l < m; l++)
+				{
+					sum += (matr[i][l] * other.matr[l][j]);
+				}
+			}
+		}
+		return sum;
+	}
 	// Overload of '=' operator as copy constructor
 	void operator=(const NetMatr &other)
 	{
@@ -156,6 +172,20 @@ public:
 			for (int j = 0; j < m; j++)
 			{
 				temp.matr[i][j] = matr[i][j] - other.matr[i][j];
+			}
+		}
+		return temp;
+	}
+	// Substact number from the matrix
+	NetMatr operator-(double num)
+	{
+		// Creating temporary matrix
+		NetMatr temp(n, m);
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < m; j++)
+			{
+				temp.matr[i][j] = matr[i][j] - num;
 			}
 		}
 		return temp;
