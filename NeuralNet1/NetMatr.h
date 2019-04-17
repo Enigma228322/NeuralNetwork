@@ -139,7 +139,7 @@ public:
 		{
 			for (int j = 0; j < m; j++)
 			{
-				std::swap(matr[i][j], matr[j][i]);
+				if (j >= i) std::swap(matr[i][j], matr[j][i]);
 			}
 		}
 	}
