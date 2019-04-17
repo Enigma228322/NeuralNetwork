@@ -31,7 +31,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="in.txt">
+    <Text Include="input_layer.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="output_layer.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
   </ItemGroup>

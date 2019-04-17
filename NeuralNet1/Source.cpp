@@ -7,8 +7,11 @@ int main()
 	NeuralNetwork nn(in_nodes, h_nodes, out_nodes);
 	nn.SetLearnCoef(0.3);
 	
-	nn.Input("in.txt");
+
+	nn.Targets("output_layer.txt");
+	nn.Input("input_layer.txt");
 	nn.Query(nn.inp);
+	nn.Train(nn.inp, nn.targets);
 	system("pause");
 	return 0;
 }
