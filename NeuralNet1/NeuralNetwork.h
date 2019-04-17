@@ -132,9 +132,8 @@ public:
 		outp = Activation_F(NetMatr(w_ho * hidden));
 		// Calculating of output errors
 		NetMatr out_errors = targets - outp;
-		w_ih.Show();
-		w_ih.T();
-		w_ih.Show();
+		NetMatr hidden_errors = w_ho.T() * out_errors;
+		hidden_errors.Show();
 	}
 	// Quering out neural network
 	NetMatr Query(NetMatr input) override

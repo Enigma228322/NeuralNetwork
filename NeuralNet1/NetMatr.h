@@ -131,17 +131,18 @@ public:
 		return temp;
 	}
 	// Square matrix transpotion
-	void T()
+	NetMatr T()
 	{
-		// Check squareness of matrix
-		if (n != m) return;
+		// Create a temporary matr
+		NetMatr temp = *this;
 		for (int i = 0; i < n; i++)
 		{
 			for (int j = 0; j < m; j++)
 			{
-				if (j >= i) std::swap(matr[i][j], matr[j][i]);
+				if (j >= i) std::swap(temp.matr[i][j], temp.matr[j][i]);
 			}
 		}
+		return temp;
 	}
 	// Setting matrix elements separately
 	void SetMatr(int i, int j, double value)
