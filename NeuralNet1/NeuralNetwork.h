@@ -91,11 +91,12 @@ public:
 	}
 	// Training neural net
 	void Train() override {}	
-	// Check neural net
-	void Query(NetMatr input) override
+	// Quering out neural network
+	NetMatr Query(NetMatr input) override
 	{
+		// Calculating hidden layer
 		hidden = Sigmoid(NetMatr(w_ih * input));
-		outp = Sigmoid(NetMatr(w_ho * hidden));
-		outp.Show();
+		// Calculating output layer and return it
+		return Sigmoid(NetMatr(w_ho * hidden));
 	}
 };

@@ -12,5 +12,5 @@ public:
 	virtual void SetLearnCoef(double learn_coef) = 0;
 	virtual void Input(std::string filename) = 0;
 	virtual void Train() = 0;
-	virtual void Query(NetMatr input) = 0;
+	virtual NetMatr Query(NetMatr input) = 0;
 };
