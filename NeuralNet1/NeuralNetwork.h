@@ -17,8 +17,6 @@ private:
 	int in_nodes, h_nodes, out_nodes;
 	// Learning coeficent
 	double learn_coef;
-	// Input and output layer matrix
-	NetMatr inp, outp;
 	// Two matrixes:
 	// w_ih - link weights between input & hidden layer (n = hidden, m = input)
 	// w_ih - link weights between hidden & output layer (n = output, m = hidden)
@@ -28,12 +26,24 @@ private:
 	// NetMatr *w; - but it's not conveniently
 
 	// Activation function
-	double Sigmoid(double x) override
+	double F(double x)
 	{
 		return 1 / (1 + exp(-x));
 	}
+	// Activation func. returns layer
+	NetMatr Sigmoid(NetMatr layer) override
+	{
+		for (int i = 0; i < layer.NSize(); i++)
+		{
+			layer.SetMatr(i, 0, F(layer.GetEl(i, 0)));
+		}
+		return layer;
+	}
 
 public:
+	// Input, hidden and output layers matrixes
+	NetMatr inp, hidden, outp;
+
 	NeuralNetwork() {}
 	~NeuralNetwork() {}
 	// Wtights initialization
@@ -82,5 +92,10 @@ public:
 	// Training neural net
 	void Train() override {}	
 	// Check neural net
-	void Query() override{}
+	void Query(NetMatr input) override
+	{
+		hidden = Sigmoid(NetMatr(w_ih * input));
+		outp = Sigmoid(NetMatr(w_ho * hidden));
+		outp.Show();
+	}
 };

@@ -8,7 +8,7 @@ int main()
 	nn.SetLearnCoef(0.3);
 	
 	nn.Input("in.txt");
-
+	nn.Query(nn.inp);
 	system("pause");
 	return 0;
 }

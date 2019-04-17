@@ -160,5 +160,8 @@ public:
 			std::cout << "\n";
 		}
 	}
+	// Return widght and height of matrix
+	int NSize() { return this->n; }
+	int MSize() { return this->m; }
 };
 
