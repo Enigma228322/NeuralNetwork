@@ -130,6 +130,19 @@ public:
 		}
 		return temp;
 	}
+	// Square matrix transpotion
+	void T()
+	{
+		// Check squareness of matrix
+		if (n != m) return;
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < m; j++)
+			{
+				std::swap(matr[i][j], matr[j][i]);
+			}
+		}
+	}
 	// Setting matrix elements separately
 	void SetMatr(int i, int j, double value)
 	{

@@ -126,11 +126,13 @@ public:
 	// targets - targets list, what we want to recieve from neural net.
 	void Train(NetMatr input, NetMatr targets) override
 	{
-		// Calculating hidden layer
+		// Calculating of hidden layer
 		hidden = Activation_F(NetMatr(w_ih * input));
-		// Calculating output layer and return it
+		// Calculating of output layer and return it
 		outp = Activation_F(NetMatr(w_ho * hidden));
-		NetMatr output_errors = targets - outp;
+		// Calculating of output errors
+		NetMatr out_errors = targets - outp;
+		out_errors.Show();
 	}
 	// Quering out neural network
 	NetMatr Query(NetMatr input) override
