@@ -133,7 +133,6 @@ public:
 		// Calculating of output errors
 		NetMatr out_errors = targets - outp;
 		NetMatr hidden_errors = w_ho.T() * out_errors;
-		hidden_errors.Show();
 	}
 	// Quering out neural network
 	NetMatr Query(NetMatr input) override
