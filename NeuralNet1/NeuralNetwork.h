@@ -134,8 +134,12 @@ public:
 		NetMatr out_errors = targets - final_out;
 		NetMatr hidden_errors = w_ho.T() * out_errors;
 		// Gradient descent formula
-		double first = ((final_out - 1.0) * ((out_errors.Transpose() * learn_coef).Vector_Mult(final_out))).Transpose().Vector_Mult(hidden);
-		w_ho = w_ho - first;
+		double difference = ((final_out - 1.0) * 
+			((out_errors.Transpose() * learn_coef).Vector_Mult(final_out))).Transpose().Vector_Mult(hidden);
+		w_ho = w_ho - difference;
+		difference = ((hidden - 1.0) *
+			((hidden_errors.Transpose() * learn_coef).Vector_Mult(hidden))).Transpose().Vector_Mult(input);
+		w_ih = w_ih - difference;
 	}
 	// Quering out neural network
 	NetMatr Query(NetMatr input) override

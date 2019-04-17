@@ -9,7 +9,7 @@ int main()
 	
 	nn.Targets("output_layer.txt");
 	nn.Input("input_layer.txt");
-
+	nn.Train(nn.inp, nn.targets);
 	system("pause");
 	return 0;
 }
