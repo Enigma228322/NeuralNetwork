@@ -5,9 +5,14 @@
 class NetMatr
 {
 private:
+	// Matrix itself
 	double **matr;
+	// Matrix dimension
 	int n, m;
+	// Checks is matrix filled up or not
+	// To avoid getting passed array
 	bool check_empty = true;
+	// Matrix creation method
 	void CreateMatr(int n, int m)
 	{
 		// set the check var
@@ -61,7 +66,7 @@ public:
 			}
 		}
 	}
-
+	// Delete filled memory
 	~NetMatr()
 	{
 		for (int i = 0; i < n; i++)
@@ -122,6 +127,18 @@ public:
 			{
 				std::cin >> matr[i][j];
 			}
+		}
+	}
+	// Getting elements from matrix
+	double GetEl(int i, int j)
+	{
+		try
+		{
+			return matr[i][j];
+		}
+		catch(...)
+		{
+			std::cout << "You getted passed out of array range";
 		}
 	}
 	// Show matrix
