@@ -41,19 +41,20 @@ private:
 		return layer;
 	}
 
-public:
-		
-	NeuralNetwork2() {}
-	~NeuralNetwork2() {}
-
 	// Wtights initialization
-	void Init_weights()
+	void Init_weights() override
 	{
 		for (int i = 0; i < nodes.size() - 1; i++)
 		{
 			w.push_back(NetMatr(nodes[i + 1].size, nodes[i].size, 0, 1));
 		}
 	}
+
+public:
+		
+	NeuralNetwork2() {}
+	~NeuralNetwork2() {}
+
 	// File with number of nodes in every layer
 	NeuralNetwork2(std::string filename)
 	{
@@ -108,7 +109,7 @@ public:
 	// Training neural net
 	// input - input layer
 	// targets - targets list, what we want to recieve from neural net.
-	void Train(Layer input, Layer targets) override
+	void Train(Layer input, Layer targets)
 	{
 		// Calculating all layers
 		for (int i = 0; i < nodes.size() - 1; i++)

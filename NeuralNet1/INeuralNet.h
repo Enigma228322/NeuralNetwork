@@ -16,8 +16,6 @@ public:
 	virtual void Input(std::string filename) = 0;
 	// Reading target list from the file
 	virtual void Targets(std::string filename) = 0;
-	// Training the neural net.
-	virtual void Train(Layer input_layer, Layer targets_list) = 0;
 	// Querying the neural net.
 	virtual void Query(std::string filename) = 0;
 };
