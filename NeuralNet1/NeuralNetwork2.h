@@ -112,7 +112,7 @@ public:
 	void ContinueTrain(std::string filename)
 	{
 		// Create temporary var
-		int temp;
+		double temp;
 		// Open in stream to file 'filename'
 		std::ifstream in(filename);
 		// Reading every element of matrix w[k] and write to array
@@ -167,7 +167,7 @@ public:
 			Layer aEOfminuso = fminuso * aEO;
 			double difference = aEOfminuso * nodes[i - 1];
 
-			w[i - 1] -= difference;
+			w[i - 1] += difference;
 		}
 	}
 	// Quering out neural network

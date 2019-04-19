@@ -13,9 +13,7 @@ int main()
 	// It should be like: 10 20 10 30 20 2
 	// First - input nums, last - output nums
 	NeuralNetwork2 nn(NODES);
-	nn.SaveWeights(WEIGHTS);
-	system("pause");
-	nn.SetLearnCoef(0.3);
+	nn.SetLearnCoef(0.01);
 	// Write input values of nodes in file: "input_layer.txt"
 	// Number of values should be equal to first num in "Nodes.txt"
 	nn.Input(INPUT);
@@ -23,13 +21,11 @@ int main()
 	// Number of values should be equal to last num in "Nodes.txt"
 	// or nodes in output layer
 	nn.Targets(TARGETS);
-	nn.ContinueTrain(WEIGHTS);
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 10000; i++)
 	{
 		nn.Train();
 	}
 	nn.SaveOutput(OUTPUT);
 	nn.SaveWeights(WEIGHTS);
-	system("pause");
 	return 0;
 }
