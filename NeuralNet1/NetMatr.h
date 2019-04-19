@@ -130,6 +130,22 @@ public:
 		}
 		return temp;
 	}
+	// Matrix multiplication
+	void operator*=(const NetMatr &other)
+	{
+		// Creating temporary matrix
+		NetMatr temp(this->n, other.m);
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < other.m; j++)
+			{
+				for (int l = 0; l < m; l++)
+				{
+					matr[i][l] *= other.matr[l][j];
+				}
+			}
+		}
+	}
 	// Martix multiplication by number
 	NetMatr operator*(double num)
 	{
@@ -143,6 +159,18 @@ public:
 			}
 		}
 		return temp;
+	}
+	// Martix multiplication by number
+	void operator*=(double num)
+	{
+		// Creating temporary matrix
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < m; j++)
+			{
+				matr[i][j] *= num;
+			}
+		}
 	}
 	// Matrix addition
 	NetMatr operator+(const NetMatr &other)
@@ -160,6 +188,20 @@ public:
 		}
 		return temp;
 	}
+	// Matrix addition
+	void operator+=(const NetMatr &other)
+	{
+		if (other.n != n || other.m != m)
+			std::cout << "Matrix dimensions aren't matching!!!";
+		// Create temporary matrix
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < m; j++)
+			{
+				matr[i][j] += other.matr[i][j];
+			}
+		}
+	}
 	// Substraction of matrixes
 	NetMatr operator-(const NetMatr &other)
 	{
@@ -175,6 +217,32 @@ public:
 			}
 		}
 		return temp;
+	}
+	// Another substraction -=
+	void operator-=(const NetMatr &other)
+	{
+		if (other.n != n || other.m != m)
+			std::cout << "Attention!!! Matrixes dimensions are different";
+		// Creating temporary matrix
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < m; j++)
+			{
+				matr[i][j] -= other.matr[i][j];
+			}
+		}
+	}
+	// Substact number from the matrix
+	void operator-=(double num)
+	{
+		// Creating temporary matrix
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < m; j++)
+			{
+				matr[i][j] -= num;
+			}
+		}
 	}
 	// Substact number from the matrix
 	NetMatr operator-(double num)
