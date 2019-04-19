@@ -1,15 +1,12 @@
-#include "NeuralNetwork.h"
+#include "NeuralNetwork2.h"
 #include "NetMatr.h"
 
 int main()
 {
-	int h_nodes = 3, in_nodes = 3, out_nodes = 3;
-	NeuralNetwork nn(in_nodes, h_nodes, out_nodes);
+	int in_nodes = 30,h_nodes = 100, out_nodes = 10;
+	NeuralNetwork2 nn(in_nodes, h_nodes, out_nodes);
 	nn.SetLearnCoef(0.3);
 	
-	nn.Targets("output_layer.txt");
-	nn.Input("input_layer.txt");
-	nn.Train(nn.inp, nn.targets);
 	system("pause");
 	return 0;
 }

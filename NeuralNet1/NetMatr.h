@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <string>
 
 class NetMatr
 {
@@ -54,15 +55,9 @@ public:
 	double Vector_Mult(const NetMatr &other)
 	{
 		double sum = 0;
-		for (int i = 0; i < n; i++)
+		for (int l = 0; l < m; l++)
 		{
-			for (int j = 0; j < other.m; j++)
-			{
-				for (int l = 0; l < m; l++)
-				{
-					sum += (matr[i][l] * other.matr[l][j]);
-				}
-			}
+			sum += (matr[0][l] * other.matr[l][0]);
 		}
 		return sum;
 	}
@@ -131,7 +126,7 @@ public:
 		return temp;
 	}
 	// Matrix multiplication
-	void operator*=(const NetMatr &other)
+	NetMatr operator*=(const NetMatr &other)
 	{
 		// Creating temporary matrix
 		NetMatr temp(this->n, other.m);
@@ -141,10 +136,11 @@ public:
 			{
 				for (int l = 0; l < m; l++)
 				{
-					matr[i][l] *= other.matr[l][j];
+					temp.matr[i][j] += matr[i][l] * other.matr[l][j];
 				}
 			}
 		}
+		return temp;
 	}
 	// Martix multiplication by number
 	NetMatr operator*(double num)
@@ -213,7 +209,7 @@ public:
 		{
 			for (int j = 0; j < m; j++)
 			{
-				temp.matr[i][j] = matr[i][j] - other.matr[i][j];
+				matr[i][j] -= other.matr[i][j];
 			}
 		}
 		return temp;
@@ -258,6 +254,18 @@ public:
 		}
 		return temp;
 	}
+	std::vector <double> operator*(std::vector <double> other)
+	{
+		std::vector <double> v(m, 0);
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < m; j++)
+			{
+				v[i] += matr[i][j] * other[j];
+			}
+		}
+		return v;
+	}
 	// Any matrix transpose
 	NetMatr Transpose()
 	{
@@ -268,20 +276,6 @@ public:
 			for (int j = 0; j < m; j++)
 			{
 				temp.matr[j][i] = matr[i][j];
-			}
-		}
-		return temp;
-	}
-	// Square matrix transpotion
-	NetMatr T()
-	{
-		// Create a temporary matr
-		NetMatr temp = *this;
-		for (int i = 0; i < n; i++)
-		{
-			for (int j = 0; j < m; j++)
-			{
-				if (j >= i) std::swap(temp.matr[i][j], temp.matr[j][i]);
 			}
 		}
 		return temp;

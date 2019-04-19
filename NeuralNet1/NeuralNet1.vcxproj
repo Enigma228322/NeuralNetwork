@@ -118,13 +118,16 @@
     <ClInclude Include="INeuralNet.h" />
     <ClInclude Include="NetMatr.h" />
     <ClInclude Include="NeuralNetwork.h" />
+    <ClInclude Include="NeuralNetwork2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="input_layer.txt" />
+    <Text Include="Nodes.txt" />
     <Text Include="output_layer.txt" />
+    <Text Include="targets.txt" />
     <Text Include="weights.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

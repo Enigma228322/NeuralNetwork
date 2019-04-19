@@ -22,6 +22,8 @@ private:
 	// w_ih - link weights between hidden & output layer (n = output, m = hidden)
 	NetMatr w_ih;
 	NetMatr w_ho;
+	// Vector with weights
+	std::vector <NetMatr> w;
 	// For more abstraction we can use array of matrixes
 	// NetMatr *w; - but it's not conveniently
 
@@ -31,7 +33,7 @@ private:
 		return 1 / (1 + exp(-x));
 	}
 	// Activation func. returns layer
-	NetMatr Activation_F(NetMatr layer) override
+	NetMatr Activation_F(NetMatr layer) 
 	{
 		for (int i = 0; i < layer.NSize(); i++)
 		{
@@ -132,7 +134,7 @@ public:
 		final_out = Activation_F(NetMatr(w_ho * hidden));
 		// Calculating of output errors
 		NetMatr out_errors = targets - final_out;
-		NetMatr hidden_errors = w_ho.T() * out_errors;
+		NetMatr hidden_errors = w_ho.Transpose() * out_errors;
 		// Gradient descent formula
 		double difference = ((final_out - 1.0) * 
 			((out_errors.Transpose() * learn_coef).Vector_Mult(final_out))).Transpose().Vector_Mult(hidden);
@@ -140,11 +142,9 @@ public:
 		difference = ((hidden - 1.0) *
 			((hidden_errors.Transpose() * learn_coef).Vector_Mult(hidden))).Transpose().Vector_Mult(input);
 		w_ih -= difference;
-
-		SaveWeights("weights.txt");
 	}
 	// Quering out neural network
-	NetMatr Query(NetMatr input) override
+	NetMatr Query(NetMatr input)
 	{
 		// Calculating hidden layer
 		hidden = Activation_F(NetMatr(w_ih * input));
@@ -152,12 +152,12 @@ public:
 		return Activation_F(NetMatr(w_ho * hidden));
 	}
 	// Writting output of neural net to the file
-	void Query(std::string filename)
+	void SaveQuery(NetMatr final_, std::string filename)
 	{
 		std::ofstream out(filename);
-		for (int i = 0; i < final_out.NSize(); i++)
+		for (int i = 0; i < final_.NSize(); i++)
 		{
-			out << final_out.GetEl(i, 0) << "\n";
+			out << final_.GetEl(i, 0) << "\n";
 		}
 		out.close();
 	}
