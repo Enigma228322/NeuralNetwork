@@ -261,7 +261,8 @@ public:
 		{
 			for (int j = 0; j < m; j++)
 			{
-				v[i] += matr[i][j] * other[j];
+				double k = matr[i][j];
+				v[i] += k * other[j];
 			}
 		}
 		return v;

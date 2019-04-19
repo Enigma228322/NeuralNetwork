@@ -101,12 +101,34 @@ public:
 		// Reading file, while we didnt read whole file
 		for (int i = 0; i < target.size; i++)
 		{
+			in >> temp;
 			target.values.push_back(temp);
 		}
 
 		in.close();
 	}
 
+	// If you want to continue training, use this func.
+	void ContinueTrain(std::string filename)
+	{
+		// Create temporary var
+		int temp;
+		// Open in stream to file 'filename'
+		std::ifstream in(filename);
+		// Reading every element of matrix w[k] and write to array
+		for (int k = 0; k < w.size(); k++)
+		{
+			for (int i = 0; i < w[k].NSize(); i++)
+			{
+				for (int j = 0; j < w[k].MSize(); j++)
+				{
+					in >> temp;
+					w[k].SetMatr(i, j, temp);
+				}
+			}
+		}
+		in.close();
+	}
 	// Training neural net
 	// input - input layer
 	// targets - targets list, what we want to recieve from neural net.
@@ -140,9 +162,9 @@ public:
 			else
 				aError = hidden_errors[i - 1] * learn_coef;
 
-			Layer aEO = aError * nodes[i];
+			double aEO = aError * nodes[i];
 			Layer fminuso = nodes[i] - 1;
-			Layer aEOfminuso = aEO * fminuso;
+			Layer aEOfminuso = fminuso * aEO;
 			double difference = aEOfminuso * nodes[i - 1];
 
 			w[i - 1] -= difference;
@@ -151,12 +173,17 @@ public:
 	// Quering out neural network
 	void Query(std::string filename) override
 	{
-		std::ofstream out(filename);
 		// Calculating hidden layer
 		for (int i = 0; i < nodes.size() - 1; i++)
 		{
 			nodes[i + 1].values = Activation_F(w[i] * nodes[i].values);
 		}
+		SaveOutput(filename);
+	}
+	// Saving output values to the file
+	void SaveOutput(std::string filename)
+	{
+		std::ofstream out(filename);
 		// Writting output layer to the file
 		for (int i = 0; i < nodes[nodes.size() - 1].size; i++)
 		{
