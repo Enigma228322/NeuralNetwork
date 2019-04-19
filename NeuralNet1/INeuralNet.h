@@ -35,7 +35,7 @@ struct Layer
 	}
 	Layer operator-(const Layer &other)
 	{
-		std::vector <double> v;
+		std::vector <double> v(size);
 		for (int i = 0; i < size; i++)
 		{
 			v[i] = values[i] - other.values[i];
@@ -44,7 +44,7 @@ struct Layer
 	}
 	Layer operator-(double other)
 	{
-		std::vector <double> v;
+		std::vector <double> v(size);
 		for (int i = 0; i < size; i++)
 		{
 			v[i] = values[i] - other;

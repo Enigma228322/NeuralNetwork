@@ -256,7 +256,7 @@ public:
 	}
 	std::vector <double> operator*(std::vector <double> other)
 	{
-		std::vector <double> v(m, 0);
+		std::vector <double> v(n, 0);
 		for (int i = 0; i < n; i++)
 		{
 			for (int j = 0; j < m; j++)

@@ -7,6 +7,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <iomanip>
 
 class NeuralNetwork2 : public INeuralNet
 {
@@ -109,7 +110,7 @@ public:
 	// Training neural net
 	// input - input layer
 	// targets - targets list, what we want to recieve from neural net.
-	void Train(Layer input, Layer targets)
+	void Train()
 	{
 		// Calculating all layers
 		for (int i = 0; i < nodes.size() - 1; i++)
@@ -118,12 +119,15 @@ public:
 		}
 		Layer final_out = nodes[nodes.size() - 1];
 		// Calculating of output errors
-		Layer out_errors = targets - final_out;
+		Layer out_errors = target - final_out;
 		// Calculating all hidden errors by "Back propagation method" 
 		std::vector <Layer> hidden_errors(w.size() - 1);
 		for (int i = w.size() - 1; i > 0; i--)// ÏÐÎÂÅÐÈÒÜ ÑÊÎËÜÊÎ ÈÒÅÐÀÖÈÉ Â ÈÒÎÃÅ
 		{
-			hidden_errors[i] = Layer(out_errors.size, w[i].Transpose() * out_errors.values);
+			if(i == w.size() - 1)
+				hidden_errors[i - 1] = Layer(out_errors.size, w[i].Transpose() * out_errors.values);
+			else
+				hidden_errors[i - 1] = Layer(out_errors.size, w[i].Transpose() * hidden_errors[i].values);
 		}
 		// Updating weights
 		for (int i = nodes.size() - 1; i > 0; i--)
@@ -134,16 +138,15 @@ public:
 			if(i == nodes.size() - 1)
 				aError = out_errors * learn_coef;
 			else
-				aError = hidden_errors[i] * learn_coef;
+				aError = hidden_errors[i - 1] * learn_coef;
 
 			Layer aEO = aError * nodes[i];
 			Layer fminuso = nodes[i] - 1;
 			Layer aEOfminuso = aEO * fminuso;
 			double difference = aEOfminuso * nodes[i - 1];
 
-			w[i] -= difference;
+			w[i - 1] -= difference;
 		}
-		SaveWeights("weights.txt");
 	}
 	// Quering out neural network
 	void Query(std::string filename) override
@@ -159,6 +162,7 @@ public:
 		{
 			out << nodes[nodes.size() - 1].values[i] << "\n";
 		}
+		out.close();
 	}
 	// Weights saving
 	void SaveWeights(std::string filename)
@@ -172,8 +176,9 @@ public:
 				for (int j = 0; j < w[k].MSize(); j++)
 				{
 					// Writting matrixes to the file
-					out << w[k].GetEl(i, j) << " ";
+					out << w[k].GetEl(i, j) << std::setw(10);
 				}
+				out << "\n";
 			}
 			out << "\n";
 		}

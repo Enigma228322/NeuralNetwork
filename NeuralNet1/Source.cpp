@@ -21,6 +21,11 @@ int main()
 	// or nodes in output layer
 	nn.Targets(TARGETS);
 	nn.Query(OUTPUT);
+	for (int i = 0; i < 1000; i++)
+	{
+		nn.Train();
+	}
+	nn.Query(OUTPUT);
 	system("pause");
 	return 0;
 }
