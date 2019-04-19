@@ -37,5 +37,8 @@
     <Text Include="output_layer.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
+    <Text Include="weights.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
 </Project>

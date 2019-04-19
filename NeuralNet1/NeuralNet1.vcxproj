@@ -125,6 +125,7 @@
   <ItemGroup>
     <Text Include="input_layer.txt" />
     <Text Include="output_layer.txt" />
+    <Text Include="weights.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

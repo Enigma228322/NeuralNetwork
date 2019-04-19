@@ -136,10 +136,12 @@ public:
 		// Gradient descent formula
 		double difference = ((final_out - 1.0) * 
 			((out_errors.Transpose() * learn_coef).Vector_Mult(final_out))).Transpose().Vector_Mult(hidden);
-		w_ho = w_ho - difference;
+		w_ho -= difference;
 		difference = ((hidden - 1.0) *
 			((hidden_errors.Transpose() * learn_coef).Vector_Mult(hidden))).Transpose().Vector_Mult(input);
-		w_ih = w_ih - difference;
+		w_ih -= difference;
+
+		SaveWeights("weights.txt");
 	}
 	// Quering out neural network
 	NetMatr Query(NetMatr input) override
@@ -148,5 +150,39 @@ public:
 		hidden = Activation_F(NetMatr(w_ih * input));
 		// Calculating output layer and return it
 		return Activation_F(NetMatr(w_ho * hidden));
+	}
+	// Writting output of neural net to the file
+	void Query(std::string filename)
+	{
+		std::ofstream out(filename);
+		for (int i = 0; i < final_out.NSize(); i++)
+		{
+			out << final_out.GetEl(i, 0) << "\n";
+		}
+		out.close();
+	}
+
+	void SaveWeights(std::string filename)
+	{
+		// We will store all weights matrxies in this vector
+		std::vector <NetMatr> weights;
+		// Adding matrixes with weights
+		weights.push_back(w_ih);
+		weights.push_back(w_ho);
+		// Opening file, which we use to store weights
+		std::ofstream out(filename);
+		
+		for (int k = 0; k < weights.size(); k++)
+		{
+			for (int i = 0; i < weights[k].NSize(); i++)
+			{
+				for (int j = 0; j < weights[k].MSize(); j++)
+				{
+					// Writting matrixes to the file
+					out << w_ih.GetEl(i, j) << " ";
+				}
+			}
+			out << "\n";
+		}
 	}
 };
