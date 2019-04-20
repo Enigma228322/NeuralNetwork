@@ -4,6 +4,7 @@
 #include <string>
 #include <cstdlib>
 #include <time.h> 
+#include <cmath>
 
 class NetMatr
 {
@@ -31,12 +32,12 @@ private:
 public:
 	NetMatr() {}
 	// Create simple matrix
-	NetMatr(int n, int m)
+	/*NetMatr(int n, int m)
 	{
 		this->n = n;
 		this->m = m;
 		CreateMatr(n, m);
-	}
+	}*/
 	// copy constructor
 	NetMatr(const NetMatr &other)
 	{
@@ -78,12 +79,8 @@ public:
 		}
 	}
 	// Fill up the matrix with random numbers in range from	l_range to r_range
-	NetMatr(int n, int m,int l_range, int r_range)
+	NetMatr(int n, int m)
 	{
-		// Increasing bounds in 1000 times, for
-		// using decimal(double) numbers in the future
-		l_range *= (double)10e3;
-		r_range *= (double)10e3;
 		this->n = n;
 		this->m = m;
 		// Creating matrix
@@ -96,7 +93,7 @@ public:
 				// dividing num to 1000, because 
 				// if we need decimal numbers in range 0 - 1, we can divide big nums
 				// for example 0,246 we should divide 246/1000
-				matr[i][j] = (l_range + rand() % r_range) / 10e3;
+				matr[i][j] = (double(rand()) / RAND_MAX);
 				matr[i][j] *= ((i + j) % 2 == 0) ? -1 : 1;
 			}
 		}
@@ -335,5 +332,20 @@ public:
 	// Return widght and height of matrix
 	int NSize() { return this->n; }
 	int MSize() { return this->m; }
+	// Bias
+	void Bias()
+	{
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < m; j++)
+			{
+				double k = trunc(fabs(matr[i][j]) / 10);
+				if (matr[i][j] > 10)
+					matr[i][j] -= 10 * k;
+				if (matr[i][j] < -10)
+					matr[i][j] += 10 * k;
+			}
+		}
+	}
 };
 

@@ -44,7 +44,7 @@ private:
 	{
 		for (int i = 0; i < nodes.size() - 1; i++)
 		{
-			w.push_back(NetMatr(nodes[i + 1].size, nodes[i].size, 0, 1));
+			w.push_back(NetMatr(nodes[i + 1].size, nodes[i].size));
 		}
 	}
 
@@ -165,6 +165,7 @@ public:
 			double difference = aEOfminuso * nodes[i - 1];
 
 			w[i - 1] -= difference;
+			w[i - 1].Bias();
 		}
 	}
 	// Quering out neural network
