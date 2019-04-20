@@ -4,9 +4,7 @@
 #include "NetMatr.h"
 #include "INeuralNet.h"
 #include  <cmath>
-#include <string>
 #include <fstream>
-#include <vector>
 #include <iomanip>
 
 class NeuralNetwork2 : public INeuralNet
@@ -26,10 +24,9 @@ private:
 	{
 		return 1 / (1 + exp(-x));
 	}
-	double Linear(double x)
+	double Tanh(double x)
 	{
-		if (x >= 2) return 1;
-		return 0;
+		return (exp(2 * x) - 1) / (exp(2 * x) + 1);
 	}
 	// Activation func. returns layer
 	std::vector <double> Activation_F(std::vector <double> layer) override

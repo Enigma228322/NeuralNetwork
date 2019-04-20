@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cstdlib>
 
 class NetMatr
 {
@@ -96,6 +97,7 @@ public:
 		this->m = m;
 		// Creating matrix
 		CreateMatr(n, m);
+		srand(time(NULL));
 		for (int i = 0; i < n; i++)
 		{
 			for (int j = 0; j < m; j++)
