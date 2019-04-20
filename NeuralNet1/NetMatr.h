@@ -53,16 +53,6 @@ public:
 			}
 		}
 	}
-	// Vectors multiplication
-	double Vector_Mult(const NetMatr &other)
-	{
-		double sum = 0;
-		for (int l = 0; l < m; l++)
-		{
-			sum += (matr[0][l] * other.matr[l][0]);
-		}
-		return sum;
-	}
 	// Overload of '=' operator as copy constructor
 	void operator=(const NetMatr &other)
 	{
@@ -276,7 +266,7 @@ public:
 		{
 			for (int j = 0; j < m; j++)
 			{
-				v[i] += matr[i][j] * other[j];// fixing here
+				v[i] += matr[i][j] * other[j]; // fixing here
 			}
 		}
 		return v;

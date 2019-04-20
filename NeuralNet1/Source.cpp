@@ -22,13 +22,16 @@ int main()
 	// Number of values should be equal to last num in "Nodes.txt"
 	// or nodes in output layer
 	nn.Targets(TARGETS);
-	nn.ContinueTrain(WEIGHTS);
+	nn.ShowWeights();
+	system("pause");
 	
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 100000; i++)
 	{
 		nn.Train();
 	}
 
+	nn.ShowOutput();
+	nn.ShowWeights();
 	nn.SaveWeights(WEIGHTS);
 	nn.SaveOutput(OUTPUT);
 	system("pause");

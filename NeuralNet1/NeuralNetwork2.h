@@ -164,7 +164,7 @@ public:
 			Layer aEOfminuso = fminuso * aEO;
 			double difference = aEOfminuso * nodes[i - 1];
 
-			w[i - 1] += difference;
+			w[i - 1] -= difference;
 		}
 	}
 	// Quering out neural network
