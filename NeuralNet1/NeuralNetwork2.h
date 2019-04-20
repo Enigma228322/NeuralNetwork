@@ -105,8 +105,8 @@ public:
 		in.close();
 	}
 
-	// If you want to continue training, use this func.
-	void ContinueTrain(std::string filename)
+	// Copy weights from file to the array
+	void SyncWeights(std::string filename)
 	{
 		// Create temporary var
 		double temp;
