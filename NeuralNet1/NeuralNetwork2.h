@@ -144,7 +144,7 @@ public:
 		for (int i = w.size() - 1; i > 0; i--)// опнбепхрэ яйнкэйн хрепюжхи б хрнце
 		{
 			if(i == w.size() - 1)
-				hidden_errors[i - 1] = Layer(out_errors.size, w[i].Transpose() * out_errors.values);
+				hidden_errors[i - 1] = Layer(out_errors.size, w[i].Transpose() * out_errors.values); // Should check this one
 			else
 				hidden_errors[i - 1] = Layer(out_errors.size, w[i].Transpose() * hidden_errors[i].values);
 		}
@@ -205,6 +205,32 @@ public:
 				out << "\n";
 			}
 			out << "\n";
+		}
+		out.close();
+	}
+	// Show weights in console
+	void ShowWeights()
+	{
+		for (int k = 0; k < w.size(); k++)
+		{
+			for (int i = 0; i < w[k].NSize(); i++)
+			{
+				for (int j = 0; j < w[k].MSize(); j++)
+				{
+					// Writting matrixes to the file
+					std::cout << w[k].GetEl(i, j) << std::setw(10);
+				}
+				std::cout << "\n";
+			}
+			std::cout << "\n";
+		}
+	}
+	// Show output values in console
+	void ShowOutput()
+	{
+		for (int i = 0; i < nodes[nodes.size() - 1].size; i++)
+		{
+			std::cout << nodes[nodes.size() - 1].values[i] << "\n";
 		}
 	}
 };

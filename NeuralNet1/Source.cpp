@@ -1,5 +1,6 @@
 #include "NeuralNetwork2.h"
 #include "NetMatr.h"
+
 #define NODES "Nodes.txt"
 #define INPUT "input_layer.txt"
 #define TARGETS "targets.txt"
@@ -13,7 +14,7 @@ int main()
 	// It should be like: 10 20 10 30 20 2
 	// First - input nums, last - output nums
 	NeuralNetwork2 nn(NODES);
-	nn.SetLearnCoef(0.01);
+	nn.SetLearnCoef(0.03);
 	// Write input values of nodes in file: "input_layer.txt"
 	// Number of values should be equal to first num in "Nodes.txt"
 	nn.Input(INPUT);
@@ -21,11 +22,15 @@ int main()
 	// Number of values should be equal to last num in "Nodes.txt"
 	// or nodes in output layer
 	nn.Targets(TARGETS);
-	for (int i = 0; i < 10000; i++)
+	nn.ContinueTrain(WEIGHTS);
+	
+	for (int i = 0; i < 100; i++)
 	{
 		nn.Train();
 	}
-	nn.SaveOutput(OUTPUT);
+
 	nn.SaveWeights(WEIGHTS);
+	nn.SaveOutput(OUTPUT);
+	system("pause");
 	return 0;
 }

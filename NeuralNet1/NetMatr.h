@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <cstdlib>
+#include <time.h> 
 
 class NetMatr
 {
@@ -97,7 +98,7 @@ public:
 		this->m = m;
 		// Creating matrix
 		CreateMatr(n, m);
-		srand(time(NULL));
+		std::srand(time(NULL));
 		for (int i = 0; i < n; i++)
 		{
 			for (int j = 0; j < m; j++)
@@ -193,6 +194,7 @@ public:
 		{
 			for (int j = 0; j < m; j++)
 			{
+				double k = matr[i][j];
 				matr[i][j] += other;
 			}
 		}
@@ -274,8 +276,7 @@ public:
 		{
 			for (int j = 0; j < m; j++)
 			{
-				double k = matr[i][j];
-				v[i] += k * other[j];
+				v[i] += matr[i][j] * other[j];// fixing here
 			}
 		}
 		return v;
