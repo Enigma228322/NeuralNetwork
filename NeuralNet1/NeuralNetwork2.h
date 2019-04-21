@@ -127,26 +127,22 @@ public:
 		in.close();
 	}
 	// Training neural net
-	// input - input layer
-	// targets - targets list, what we want to recieve from neural net.
 	void Train()
 	{
 		// Calculating all layers
-		for (int i = 0; i < nodes.size() - 1; i++)
-		{
-			nodes[i + 1].values = Activation_F(w[i] * nodes[i].values);
-		}
+		LayerCalc();
+		// Last layer is output layer
 		Layer final_out = nodes[nodes.size() - 1];
 		// Calculating of output errors
 		Layer out_errors = target - final_out;
 		// Calculating all hidden errors by "Back propagation method" 
 		std::vector <Layer> hidden_errors(w.size() - 1);
-		for (int i = w.size() - 1; i > 0; i--)// ÏÐÎÂÅÐÈÒÜ ÑÊÎËÜÊÎ ÈÒÅÐÀÖÈÉ Â ÈÒÎÃÅ
+		for (int i = w.size() - 1; i > 0; i--)
 		{
 			if(i == w.size() - 1)
-				hidden_errors[i - 1] = Layer(out_errors.size, w[i].Transpose() * out_errors.values); // Should check this one
+				hidden_errors[i - 1] = Layer(w[i].MSize(), w[i].Transpose() * out_errors.values);
 			else
-				hidden_errors[i - 1] = Layer(out_errors.size, w[i].Transpose() * hidden_errors[i].values);
+				hidden_errors[i - 1] = Layer(w[i].MSize(), w[i].Transpose() * hidden_errors[i].values);
 		}
 		// Updating weights
 		for (int i = nodes.size() - 1; i > 0; i--)
@@ -162,21 +158,31 @@ public:
 			double aEO = aError * nodes[i];
 			Layer fminuso = nodes[i] - 1;
 			Layer aEOfminuso = fminuso * aEO;
-			double difference = aEOfminuso * nodes[i - 1];
+			double difference = aEOfminuso * nodes[i];
 
 			w[i - 1] -= difference;
-			w[i - 1].Bias();
+			//w[i - 1].Bias();
 		}
 	}
 	// Quering out neural network
 	void Query(std::string filename) override
 	{
 		// Calculating hidden layer
-		for (int i = 0; i < nodes.size() - 1; i++)
-		{
-			nodes[i + 1].values = Activation_F(w[i] * nodes[i].values);
-		}
+		LayerCalc();
 		SaveOutput(filename);
+	}
+	// Hidden errors calculation
+	void HidErrors()
+	{
+
+	}
+	// Calculating layers
+	void LayerCalc()
+	{
+		for (int i = 1; i < nodes.size(); i++)
+		{
+			nodes[i].values = Activation_F(w[i - 1] * nodes[i - 1].values);
+		}
 	}
 	// Saving output values to the file
 	void SaveOutput(std::string filename)

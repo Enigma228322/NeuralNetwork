@@ -23,19 +23,17 @@ int main()
 	// Number of values should be equal to last num in "Nodes.txt"
 	// or nodes in output layer
 	nn.Targets(TARGETS);
-	//nn.SyncWeights(WEIGHTS);
+	nn.SyncWeights(WEIGHTS);
 
-	//nn.Query(OUTPUT);
-	nn.ShowWeights();
-	system("pause");
+	/*nn.Query(OUTPUT);
+	nn.ShowOutput();*/
 	
-	for (int i = 0; i < 5000000; i++)
+	for (int i = 0; i < 1000; i++)
 	{
 		nn.Train();
 	}
 
 	nn.ShowOutput();
-	nn.ShowWeights();
 	nn.SaveWeights(WEIGHTS);
 	nn.SaveOutput(OUTPUT);
 	system("pause");
