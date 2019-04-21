@@ -56,7 +56,7 @@ struct Layer
 		double sum = 0;
 		for (int i = 0; i < size; i++)
 		{
-			sum += values[i] * other.values[i];	
+			sum += values[i] * other.values[i];
 		}
 		return sum;
 	}
@@ -68,6 +68,15 @@ struct Layer
 			v[i] = values[i] * val;
 		}
 		return Layer(size, v);
+	}
+	double Sum()
+	{
+		double sum = 0;
+		for (int i = 0; i < size; i++)
+		{
+			sum += values[i];
+		}
+		return sum;
 	}
 	
 	std::vector <double> values;

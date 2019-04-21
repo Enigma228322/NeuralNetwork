@@ -160,25 +160,24 @@ public:
 			if(i == w.size() - 1)
 				hidden_errors[i - 1] = Layer(out_errors.size, w[i].Transpose() * out_errors.values); // Should check this one
 			else
-				hidden_errors[i - 1] = Layer(out_errors.size, w[i].Transpose() * hidden_errors[i].values);
+				hidden_errors[i - 1] = Layer(hidden_errors[i].size, w[i].Transpose() * hidden_errors[i].values);
 		}
 		// Updating weights
 		for (int i = nodes.size() - 1; i > 0; i--)
 		{
+			double difference = 0;
 			// Gradient descent formula
 			// w(1) - w(0) = difference = a * E(k) * F(layer[i]) * (F(layer[i] - 1) * layer[i - 1])
-			Layer aError;
-			if(i == nodes.size() - 1)
-				aError = out_errors * learn_coef;
+			if (i == nodes.size() - 1)
+			{
+				difference = nodes[i - 1] * (nodes[i] * (nodes[i] - 1)) * out_errors * learn_coef * (-1);// Error with dimensions
+			}
 			else
-				aError = hidden_errors[i - 1] * learn_coef;
-
-			double aEO = aError * nodes[i];
-			Layer fminuso = nodes[i] - 1;
-			Layer aEOfminuso = fminuso * aEO;
-			double difference = aEOfminuso * nodes[i];
-
-			w[i - 1] -= difference;
+			{
+				difference = nodes[i - 1] * (nodes[i] * (nodes[i] - 1)) * hidden_errors[i - 1] * learn_coef * (-1); //  Error with dimensions
+			}
+			
+			w[i - 1] += difference;
 		}
 	}
 	// Quering out neural network
