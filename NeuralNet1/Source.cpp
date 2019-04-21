@@ -11,11 +11,14 @@
 
 int main()
 {
+	std::srand(time(NULL));
 	// Write nums of nodes in file: "Nodes.txt"
 	// It should be like: 10 20 10 30 20 2
 	// First - input nums, last - output nums
 	NeuralNetwork2 nn(NODES);
 	nn.SetLearnCoef(0.5);
+	nn.SaveWeights(WEIGHTS);
+	system("pause");
 	// Write input values of nodes in file: "input_layer.txt"
 	// Number of values should be equal to first num in "Nodes.txt"
 	nn.Input(INPUT);
@@ -23,7 +26,7 @@ int main()
 	// Number of values should be equal to last num in "Nodes.txt"
 	// or nodes in output layer
 	nn.Targets(TARGETS);
-	nn.SyncWeights(WEIGHTS);
+	//nn.SyncWeights(WEIGHTS);
 
 	/*nn.Query(OUTPUT);
 	nn.ShowOutput();*/

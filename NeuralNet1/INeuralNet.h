@@ -69,6 +69,7 @@ struct Layer
 		}
 		return Layer(size, v);
 	}
+	
 	std::vector <double> values;
 	int size;
 };

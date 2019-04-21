@@ -85,7 +85,6 @@ public:
 		this->m = m;
 		// Creating matrix
 		CreateMatr(n, m);
-		std::srand(time(NULL));
 		for (int i = 0; i < n; i++)
 		{
 			for (int j = 0; j < m; j++)
@@ -332,20 +331,5 @@ public:
 	// Return widght and height of matrix
 	int NSize() { return this->n; }
 	int MSize() { return this->m; }
-	// Bias
-	void Bias()
-	{
-		for (int i = 0; i < n; i++)
-		{
-			for (int j = 0; j < m; j++)
-			{
-				double k = trunc(fabs(matr[i][j]) / 10);
-				if (matr[i][j] > 10)
-					matr[i][j] -= 10 * k;
-				if (matr[i][j] < -10)
-					matr[i][j] += 10 * k;
-			}
-		}
-	}
 };
 

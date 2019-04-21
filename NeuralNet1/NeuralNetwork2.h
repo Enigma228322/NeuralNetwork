@@ -31,6 +31,7 @@ private:
 	// Activation func. returns layer
 	std::vector <double> Activation_F(std::vector <double> layer) override
 	{
+		//Bias(layer);
 		for (int i = 0; i < layer.size(); i++)
 		{
 			// Using sigmoid function to vector
@@ -38,7 +39,24 @@ private:
 		}
 		return layer;
 	}
-
+	// Bias
+	void Bias(std::vector <double> &values)
+	{
+		for (int i = 0; i < values.size(); i++)
+		{
+			int cnt = 0;
+			double temp = fabs(values[i]);
+			while (temp >= 1)
+			{
+				temp /= 10;
+				cnt++;
+			}
+			if (values[i] > 1)
+				values[i] /= 10 * cnt;
+			if (values[i] < -1)
+				values[i] /= 10 * cnt;
+		}
+	}
 	// Wtights initialization
 	void Init_weights() override
 	{
@@ -131,18 +149,18 @@ public:
 	{
 		// Calculating all layers
 		LayerCalc();
-		// Last layer is output layer
+		// Last layers
 		Layer final_out = nodes[nodes.size() - 1];
 		// Calculating of output errors
 		Layer out_errors = target - final_out;
 		// Calculating all hidden errors by "Back propagation method" 
 		std::vector <Layer> hidden_errors(w.size() - 1);
-		for (int i = w.size() - 1; i > 0; i--)
+		for (int i = w.size() - 1; i > 0; i--)// ÏÐÎÂÅÐÈÒÜ ÑÊÎËÜÊÎ ÈÒÅÐÀÖÈÉ Â ÈÒÎÃÅ
 		{
 			if(i == w.size() - 1)
-				hidden_errors[i - 1] = Layer(w[i].MSize(), w[i].Transpose() * out_errors.values);
+				hidden_errors[i - 1] = Layer(out_errors.size, w[i].Transpose() * out_errors.values); // Should check this one
 			else
-				hidden_errors[i - 1] = Layer(w[i].MSize(), w[i].Transpose() * hidden_errors[i].values);
+				hidden_errors[i - 1] = Layer(out_errors.size, w[i].Transpose() * hidden_errors[i].values);
 		}
 		// Updating weights
 		for (int i = nodes.size() - 1; i > 0; i--)
@@ -161,7 +179,6 @@ public:
 			double difference = aEOfminuso * nodes[i];
 
 			w[i - 1] -= difference;
-			//w[i - 1].Bias();
 		}
 	}
 	// Quering out neural network
