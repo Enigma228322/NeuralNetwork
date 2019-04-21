@@ -171,11 +171,6 @@ public:
 		LayerCalc();
 		SaveOutput(filename);
 	}
-	// Hidden errors calculation
-	void HidErrors()
-	{
-
-	}
 	// Calculating layers
 	void LayerCalc()
 	{
