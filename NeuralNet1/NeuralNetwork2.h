@@ -24,10 +24,6 @@ private:
 	{
 		return 1 / (1 + exp(-x));
 	}
-	double Tanh(double x)
-	{
-		return (exp(2 * x) - 1) / (exp(2 * x) + 1);
-	}
 	// Activation func. returns layer
 	std::vector <double> Activation_F(std::vector <double> layer) override
 	{
@@ -62,6 +58,7 @@ private:
 	{
 		for (int i = 0; i < nodes.size() - 1; i++)
 		{
+			// Creating matrix, dim = n * m, where n - next layer size, m - current layer size
 			w.push_back(NetMatr(nodes[i + 1].size, nodes[i].size));
 		}
 	}
@@ -151,33 +148,20 @@ public:
 		LayerCalc();
 		// Last layers
 		Layer final_out = nodes[nodes.size() - 1];
-		// Calculating of output errors
-		Layer out_errors = target - final_out;
 		// Calculating all hidden errors by "Back propagation method" 
-		std::vector <Layer> hidden_errors(w.size() - 1);
-		for (int i = w.size() - 1; i > 0; i--)// опнбепхрэ яйнкэйн хрепюжхи б хрнце
+		std::vector <Layer> errors(nodes.size() - 1);
+		// Calculating of output errors
+		errors[errors.size() - 1] = target - final_out;
+		// Calculating hidden layers
+		// i = errors.size() - 2, because output_errors = errors.size() - 1
+		for (int i = errors.size() - 2; i >= 0; i--)
 		{
-			if(i == w.size() - 1)
-				hidden_errors[i - 1] = Layer(out_errors.size, w[i].Transpose() * out_errors.values); // Should check this one
-			else
-				hidden_errors[i - 1] = Layer(hidden_errors[i].size, w[i].Transpose() * hidden_errors[i].values);
+			errors[i] = Layer(w[i].MSize(), w[i + 1].Transpose() * errors[i + 1].values);
 		}
-		// Updating weights
+		// Update weights using Gradient descent formula
 		for (int i = nodes.size() - 1; i > 0; i--)
 		{
-			double difference = 0;
-			// Gradient descent formula
-			// w(1) - w(0) = difference = a * E(k) * F(layer[i]) * (F(layer[i] - 1) * layer[i - 1])
-			if (i == nodes.size() - 1)
-			{
-				difference = nodes[i - 1] * (nodes[i] * (nodes[i] - 1)) * out_errors * learn_coef * (-1);// Error with dimensions
-			}
-			else
-			{
-				difference = nodes[i - 1] * (nodes[i] * (nodes[i] - 1)) * hidden_errors[i - 1] * learn_coef * (-1); //  Error with dimensions
-			}
-			
-			w[i - 1] += difference;
+			w[i - 1] -= (errors[i - 1] * nodes[i]) * ((nodes[i] - 1) * nodes[i - 1]) * learn_coef;
 		}
 	}
 	// Quering out neural network
@@ -185,14 +169,13 @@ public:
 	{
 		// Calculating hidden layer
 		LayerCalc();
-		SaveOutput(filename);
 	}
 	// Calculating layers
 	void LayerCalc()
 	{
-		for (int i = 1; i < nodes.size(); i++)
+		for (int i = 0; i < nodes.size() - 1; i++)
 		{
-			nodes[i].values = Activation_F(w[i - 1] * nodes[i - 1].values);
+			nodes[i + 1].values = Activation_F(w[i] * nodes[i].values);
 		}
 	}
 	// Saving output values to the file
