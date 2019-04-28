@@ -10,25 +10,9 @@ class NetMatr
 {
 private:
 	// Matrix itself
-	double **matr;
+	std::vector <std::vector <double>> matr;
 	// Matrix dimension
 	int n, m;
-	// Checks is matrix filled up or not
-	// To avoid getting passed array
-	bool check_empty = true;
-	// Matrix creation method
-	void CreateMatr(int n, int m)
-	{
-		// set the check var
-		check_empty = false;
-		matr = new double*[n];
-		for (int i = 0; i < n; i++)
-		{
-			matr[i] = new double[m];
-			// Initialization by zeros
-			for (int j = 0; j < m; j++) matr[i][j] = 0;
-		}
-	}
 public:
 	NetMatr() {}
 	// Create simple matrix
@@ -36,55 +20,48 @@ public:
 	{
 		this->n = n;
 		this->m = m;
-		CreateMatr(n, m);
+		matr.resize(n, std::vector <double>(m, 0));
 	}*/
 	// copy constructor
 	NetMatr(const NetMatr &other)
 	{
 		this->n = other.n;
 		this->m = other.m;
-		check_empty = false;
-		this->matr = new double*[other.n];
-		for (int i = 0; i < other.n; i++)
+		// Creating matrix
+		matr.resize(n, std::vector <double>(m, 0));
+		for (int i = 0; i < n; i++)
 		{
-			this->matr[i] = new double[other.m];
-			for (int j = 0; j < other.m; j++)
+			for (int j = 0; j < m; j++)
 			{
-				this->matr[i][j] = other.matr[i][j];
+ 				matr[i][j] = other.matr[i][j];
 			}
 		}
 	}
+
 	// Overload of '=' operator as copy constructor
 	void operator=(const NetMatr &other)
 	{
 		this->n = other.n;
 		this->m = other.m;
-		check_empty = false;
-		this->matr = new double*[other.n];
-		for (int i = 0; i < other.n; i++)
+		matr.resize(n, std::vector <double>(m, 0));
+		for (int i = 0; i < n; i++)
 		{
-			this->matr[i] = new double[other.m];
-			for (int j = 0; j < other.m; j++)
+			for (int j = 0; j < m; j++)
 			{
-				this->matr[i][j] = other.matr[i][j];
+				matr[i][j] = other.matr[i][j];
 			}
 		}
 	}
 	// Delete filled memory
-	~NetMatr()
-	{
-		for (int i = 0; i < n; i++)
-		{
-			delete [] matr[i];
-		}
-	}
+	~NetMatr() {}
 	// Fill up the matrix with random numbers in range from	l_range to r_range
 	NetMatr(int n, int m)
 	{
 		this->n = n;
 		this->m = m;
 		// Creating matrix
-		CreateMatr(n, m);
+		matr.resize(n, std::vector <double>(m, 0));
+
 		for (int i = 0; i < n; i++)
 		{
 			for (int j = 0; j < m; j++)
@@ -114,25 +91,8 @@ public:
 		}
 		return temp;
 	}
-	// Matrix multiplication
-	NetMatr operator*=(const NetMatr &other)
-	{
-		// Creating temporary matrix
-		NetMatr temp(this->n, other.m);
-		for (int i = 0; i < n; i++)
-		{
-			for (int j = 0; j < other.m; j++)
-			{
-				for (int l = 0; l < m; l++)
-				{
-					temp.matr[i][j] += matr[i][l] * other.matr[l][j];
-				}
-			}
-		}
-		return temp;
-	}
 	// Martix multiplication by number
-	NetMatr operator*(double num)
+	NetMatr operator*(const double &num)
 	{
 		// Creating temporary matrix
 		NetMatr temp = *this;
@@ -146,7 +106,7 @@ public:
 		return temp;
 	}
 	// Martix multiplication by number
-	void operator*=(double num)
+	void operator*=(const double &num)
 	{
 		// Creating temporary matrix
 		for (int i = 0; i < n; i++)
@@ -173,14 +133,13 @@ public:
 		}
 		return temp;
 	}
-	void operator+=(const double other)
+	void operator+=(const double &other)
 	{
 		// Create temporary matrix
 		for (int i = 0; i < n; i++)
 		{
 			for (int j = 0; j < m; j++)
 			{
-				double k = matr[i][j];
 				matr[i][j] += other;
 			}
 		}
@@ -210,7 +169,7 @@ public:
 		{
 			for (int j = 0; j < m; j++)
 			{
-				matr[i][j] -= other.matr[i][j];
+				temp.matr[i][j] = matr[i][j] - other.matr[i][j];
 			}
 		}
 		return temp;
@@ -255,12 +214,12 @@ public:
 		}
 		return temp;
 	}
-	std::vector <double> operator*(std::vector <double> other)
+	std::vector <double> operator*(std::vector <double> &other)
 	{
 		std::vector <double> v(n, 0);
 		for (int i = 0; i < n; i++)
 		{
-			for (int j = 0; j < m; j++)
+			for (int j = 0; j < other.size(); j++)
 			{
 				v[i] += matr[i][j] * other[j]; // fixing here
 			}
@@ -286,17 +245,6 @@ public:
 	{
 		matr[i][j] = value;
 	}
-	// Setting matrix using keyboard
-	void SetMatr()
-	{
-		for (int i = 0; i < n; i++)
-		{
-			for (int j = 0; j < m; j++)
-			{
-				std::cin >> matr[i][j];
-			}
-		}
-	}
 	// Getting elements from matrix
 	double GetEl(int i, int j)
 	{
@@ -313,9 +261,9 @@ public:
 	void Show()
 	{
 		// Check emptiness of matr
-		if (check_empty)
+		if (matr.empty())
 		{
-			std::cout << "Массив пуст";
+			std::cout << "Массив пуст!\n";
 			return;
 		}
 		// matr output
@@ -329,7 +277,7 @@ public:
 		}
 	}
 	// Return widght and height of matrix
-	int NSize() { return this->n; }
-	int MSize() { return this->m; }
+	int NSize() { return n; }
+	int MSize() { return m; }
 };
 

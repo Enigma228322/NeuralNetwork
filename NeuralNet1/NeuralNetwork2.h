@@ -1,7 +1,6 @@
 #pragma once
 // MA FIRST AI PROJECT, DONT JUDGE HARD PLS
 
-#include "NetMatr.h"
 #include "INeuralNet.h"
 #include  <cmath>
 #include <fstream>
@@ -15,7 +14,7 @@ private:
 	// Vector with weights
 	std::vector <NetMatr> w;
 	// Nodes of net: input, hidden1, hidden2 ... , output 
-	std::vector <Layer> nodes;
+	std::vector <Layer> layer;
 	// Targets for training
 	Layer target;
 
@@ -24,6 +23,10 @@ private:
 	{
 		return 1 / (1 + exp(-x));
 	}
+	double F(double x)
+	{
+		return x;
+	}
 	// Activation func. returns layer
 	std::vector <double> Activation_F(std::vector <double> layer) override
 	{
@@ -31,7 +34,8 @@ private:
 		for (int i = 0; i < layer.size(); i++)
 		{
 			// Using sigmoid function to vector
-			layer[i] = Sigmoid(layer[i]);
+			//Bias(layer);
+			layer[i] = F(layer[i]);
 		}
 		return layer;
 	}
@@ -56,10 +60,11 @@ private:
 	// Wtights initialization
 	void Init_weights() override
 	{
-		for (int i = 0; i < nodes.size() - 1; i++)
+		w.resize(layer.size() - 1);
+		for (int i = 0; i < layer.size() - 1; i++)
 		{
 			// Creating matrix, dim = n * m, where n - next layer size, m - current layer size
-			w.push_back(NetMatr(nodes[i + 1].size, nodes[i].size));
+			w[i] = NetMatr(layer[i + 1].size, layer[i].size);
 		}
 	}
 
@@ -76,12 +81,12 @@ public:
 		// Reading nums of nodes in every layer one by one
 		while (in >> temp)
 		{
-			nodes.push_back(Layer(temp));
+			layer.push_back(Layer(temp));
 		}
 		// Initialization of weights
 		Init_weights();
 		// Assigning value 'size' to tagrgets size
-		target.size = nodes[nodes.size() - 1].size;
+		target.size = layer[layer.size() - 1].size;
 	}
 
 	// Name of method says for himself i suppose
@@ -97,10 +102,10 @@ public:
 		// temporary value
 		double temp;
 		// Reading file
-		for (int i = 0; i < nodes[0].size; i++)
+		for (int i = 0; i < layer[0].size; i++)
 		{
 			in >> temp;
-			nodes[0].values.push_back(temp);
+			layer[0].values.push_back(temp);
 		}
 	}
 
@@ -147,22 +152,30 @@ public:
 		// Calculating all layers
 		LayerCalc();
 		// Last layers
-		Layer final_out = nodes[nodes.size() - 1];
+		Layer final_out = layer[layer.size() - 1];
 		// Calculating all hidden errors by "Back propagation method" 
-		std::vector <Layer> errors(nodes.size() - 1);
+		std::vector <Layer> errors(layer.size() - 1);
 		// Calculating of output errors
 		errors[errors.size() - 1] = target - final_out;
 		// Calculating hidden layers
 		// i = errors.size() - 2, because output_errors = errors.size() - 1
 		for (int i = errors.size() - 2; i >= 0; i--)
 		{
-			errors[i] = Layer(w[i].MSize(), w[i + 1].Transpose() * errors[i + 1].values);
+			errors[i] = Layer(layer[i + 1].size, w[i + 1].Transpose() * errors[i + 1].values);
 		}
 		// Update weights using Gradient descent formula
-		for (int i = nodes.size() - 1; i > 0; i--)
+		for (int i = layer.size() - 1; i > 0; i--)
 		{
-			w[i - 1] -= (errors[i - 1] * nodes[i]) * ((nodes[i] - 1) * nodes[i - 1]) * learn_coef;
+			w[i - 1] -= Gradient(errors[i - 1], layer[i], layer[i - 1]);
 		}
+	}
+	double Gradient(Layer E, Layer Ok, Layer Oj)
+	{
+		double one = E * Ok;
+		Layer two = (Ok - 1) * one;
+		double three = two * Oj; // WHAT TO DO?
+
+		return learn_coef;
 	}
 	// Quering out neural network
 	void Query(std::string filename) override
@@ -173,9 +186,9 @@ public:
 	// Calculating layers
 	void LayerCalc()
 	{
-		for (int i = 0; i < nodes.size() - 1; i++)
+		for (int i = 0; i < layer.size() - 1; i++)
 		{
-			nodes[i + 1].values = Activation_F(w[i] * nodes[i].values);
+			layer[i + 1].values = Activation_F(w[i] * layer[i].values);
 		}
 	}
 	// Saving output values to the file
@@ -183,9 +196,9 @@ public:
 	{
 		std::ofstream out(filename);
 		// Writting output layer to the file
-		for (int i = 0; i < nodes[nodes.size() - 1].size; i++)
+		for (int i = 0; i < layer[layer.size() - 1].size; i++)
 		{
-			out << nodes[nodes.size() - 1].values[i] << "\n";
+			out << layer[layer.size() - 1].values[i] << "\n";
 		}
 		out.close();
 	}
@@ -229,9 +242,9 @@ public:
 	// Show output values in console
 	void ShowOutput()
 	{
-		for (int i = 0; i < nodes[nodes.size() - 1].size; i++)
+		for (int i = 0; i < layer[layer.size() - 1].size; i++)
 		{
-			std::cout << nodes[nodes.size() - 1].values[i] << "\n";
+			std::cout << layer[layer.size() - 1].values[i] << "\n";
 		}
 	}
 };

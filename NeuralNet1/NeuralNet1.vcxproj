@@ -116,6 +116,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="INeuralNet.h" />
+    <ClInclude Include="Layer.h" />
     <ClInclude Include="NetMatr.h" />
     <ClInclude Include="NeuralNetwork2.h" />
   </ItemGroup>
