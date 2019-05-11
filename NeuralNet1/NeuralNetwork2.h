@@ -168,7 +168,7 @@ public:
 	
 	NetMatr GradientD(Layer Error, Layer Fout, Layer Prev)
 	{
-		Layer first = (Fout - 1) * (Error * Fout);
+		Layer first = (Fout - 1) * (Error * Fout) * learn_coef;
 		NetMatr m(first.values, Prev.values);
 		return m;
 	}
