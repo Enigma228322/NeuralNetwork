@@ -23,10 +23,6 @@ private:
 	{
 		return 1 / (1 + exp(-x));
 	}
-	double F(double x)
-	{
-		return x;
-	}
 	// Activation func. returns layer
 	std::vector <double> Activation_F(std::vector <double> layer) override
 	{
@@ -35,7 +31,7 @@ private:
 		{
 			// Using sigmoid function to vector
 			//Bias(layer);
-			layer[i] = F(layer[i]);
+			layer[i] = Sigmoid(layer[i]);
 		}
 		return layer;
 	}
@@ -166,17 +162,17 @@ public:
 		// Update weights using Gradient descent formula
 		for (int i = layer.size() - 1; i > 0; i--)
 		{
-			w[i - 1] -= Gradient(errors[i - 1], layer[i], layer[i - 1]);
+			w[i - 1] -= GradientD(errors[i - 1], layer[i], layer[i - 1]);
 		}
 	}
-	double Gradient(Layer E, Layer Ok, Layer Oj)
+	
+	NetMatr GradientD(Layer Error, Layer Fout, Layer Prev)
 	{
-		double one = E * Ok;
-		Layer two = (Ok - 1) * one;
-		double three = two * Oj; // WHAT TO DO?
-
-		return learn_coef;
+		Layer first = (Fout - 1) * (Error * Fout);
+		NetMatr m(first.values, Prev.values);
+		return m;
 	}
+
 	// Quering out neural network
 	void Query(std::string filename) override
 	{

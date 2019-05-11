@@ -37,6 +37,20 @@ public:
 			}
 		}
 	}
+	// Making new matrix with 2 vectors
+	NetMatr(std::vector <double> &first, std::vector <double> &second)
+	{
+		this->n = first.size();
+		this->m = second.size();
+		matr.resize(n, std::vector <double>(m, 0));
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < m; j++)
+			{
+				matr[i][j] = first[i] * second[j];
+			}
+		}
+	}
 
 	// Overload of '=' operator as copy constructor
 	void operator=(const NetMatr &other)
