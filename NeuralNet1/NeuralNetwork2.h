@@ -15,9 +15,12 @@ private:
 	std::vector <NetMatr> w;
 	// Nodes of net: input, hidden1, hidden2 ... , output 
 	std::vector <Layer> layer;
+	// How much layers
+	int layers_cnt = 0;
 	// Targets for training
-	Layer target;
-
+	std::vector <Layer> targets;
+	//Inputs for training
+	std::vector <Layer> inputs;
 	// Activation functions
 	double Sigmoid(double x)
 	{
@@ -78,11 +81,10 @@ public:
 		while (in >> temp)
 		{
 			layer.push_back(Layer(temp));
+			layers_cnt++;
 		}
 		// Initialization of weights
 		Init_weights();
-		// Assigning value 'size' to tagrgets size
-		target.size = layer[layer.size() - 1].size;
 	}
 
 	// Name of method says for himself i suppose
@@ -95,14 +97,33 @@ public:
 	void Input(std::string filename) override
 	{
 		std::ifstream in(filename);
-		// temporary value
+		// How much input neurons
+		int neuron_cnt = layer[0].size;
+		// Temporary vector where we store the one input Layer
+		std::vector <double> temp_v(neuron_cnt);
+		// Just counter
+		int i = 0;
+		// Just temporary value
 		double temp;
-		// Reading file
-		for (int i = 0; i < layer[0].size; i++)
+		// Reading file, while we didnt read whole file
+		while (in >> temp)
 		{
-			in >> temp;
-			layer[0].values.push_back(temp);
+			temp_v[i] = temp;
+			if (i == neuron_cnt - 1)
+			{
+				i = 0;
+				inputs.push_back(Layer(neuron_cnt, temp_v));
+				temp_v.clear();
+				temp_v.resize(neuron_cnt);
+				continue;
+			}
+			i++;
 		}
+	}
+	// How much examples
+	int Examples()
+	{
+		return targets.size();
 	}
 
 	// Initilization of Target list
@@ -111,11 +132,25 @@ public:
 		std::ifstream in(filename);
 		// temporary variable
 		double temp;
+		// How much neurons in output layer
+		int neuron_cnt = layer[layers_cnt - 1].size;
+		// Temporary vector where we store the one of targets
+		std::vector <double> temp_v(neuron_cnt);
+		// Just counter
+		int i = 0;
 		// Reading file, while we didnt read whole file
-		for (int i = 0; i < target.size; i++)
+		while (in >> temp)
 		{
-			in >> temp;
-			target.values.push_back(temp);
+			temp_v[i] = temp;
+			if (i == neuron_cnt - 1)
+			{
+				i = 0;
+				targets.push_back(Layer(neuron_cnt, temp_v));
+				temp_v.clear();
+				temp_v.resize(neuron_cnt);
+				continue;
+			}
+			i++;
 		}
 
 		in.close();
@@ -143,8 +178,11 @@ public:
 		in.close();
 	}
 	// Training neural net
-	void Train()
+	void Train(int trainMode)
 	{
+		// Target initialization
+		Layer target = targets[trainMode];
+		layer[0] = inputs[trainMode];
 		// Calculating all layers
 		LayerCalc();
 		// Last layers
@@ -162,7 +200,8 @@ public:
 		// Update weights using Gradient descent formula
 		for (int i = layer.size() - 1; i > 0; i--)
 		{
-			w[i - 1] -= GradientD(errors[i - 1], layer[i], layer[i - 1]);
+			Layer first = (layer[i] - 1) * (errors[i - 1] * layer[i]) * learn_coef;
+			w[i - 1] -= NetMatr(first.values, layer[i - 1].values);
 		}
 	}
 	
@@ -172,16 +211,20 @@ public:
 		NetMatr m(first.values, Prev.values);
 		return m;
 	}
+	// Which example you wanna use?
+	int queryMode = 0;
 
 	// Quering out neural network
 	void Query(std::string filename) override
 	{
+		layer[0] = inputs[queryMode];
 		// Calculating hidden layer
 		LayerCalc();
 	}
 	// Calculating layers
 	void LayerCalc()
 	{
+		
 		for (int i = 0; i < layer.size() - 1; i++)
 		{
 			layer[i + 1].values = Activation_F(w[i] * layer[i].values);
@@ -243,4 +286,5 @@ public:
 			std::cout << layer[layer.size() - 1].values[i] << "\n";
 		}
 	}
+
 };

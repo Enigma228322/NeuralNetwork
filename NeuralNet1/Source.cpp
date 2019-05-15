@@ -24,19 +24,30 @@ int main()
 	// Number of values should be equal to last num in "Nodes.txt"
 	// or nodes in output layer
 	nn.Targets(TARGETS);
-	nn.SyncWeights(WEIGHTS);
 
-	//nn.Query(OUTPUT);
-	//nn.ShowOutput();
-	
-	for (int i = 0; i < 1000; i++)
+	nn.SyncWeights(WEIGHTS);
+	// Choose what you want to do: train or query the nn
+	bool train = 0;
+	if (train)
 	{
-		nn.Train();
+		for (int j = 0, i = 0; j < 1000; j++, i++)
+		{
+			if (i / nn.Examples() == 1) i = 0;
+			nn.Train(i);
+		}
+		nn.SaveWeights(WEIGHTS);
+	}
+	else
+	{
+		for (int i = 0; i < nn.Examples(); i++)
+		{
+			nn.queryMode = i;
+			nn.Query(OUTPUT);
+			nn.ShowOutput();
+			nn.SaveOutput(OUTPUT);
+		}
 	}
 
-	nn.ShowOutput();
-	nn.SaveWeights(WEIGHTS);
-	nn.SaveOutput(OUTPUT);
 	system("pause");
 	return 0;
 }

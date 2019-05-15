@@ -9,7 +9,7 @@ struct Layer
 		size = size_;
 	}
 
-	Layer(int size_, std::vector <double> values_)
+	Layer(int size_,const std::vector <double> &values_)
 	{
 		size = size_;
 		values = values_;
